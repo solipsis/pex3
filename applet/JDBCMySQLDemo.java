@@ -5,6 +5,8 @@ package applet;
  * 
  * @author Randy Bower
  */
+import java.awt.Font;
+import java.awt.GraphicsEnvironment;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -30,6 +32,11 @@ public class JDBCMySQLDemo
       rs.close();
       stmt.close();
       con.close();
+      GraphicsEnvironment e = GraphicsEnvironment.getLocalGraphicsEnvironment();
+      Font[] fonts = e.getAllFonts();
+      for (Font f : fonts) {
+    	  System.out.println(f.getFontName());
+      }
     }
     catch( SQLException e )
     {
