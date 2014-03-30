@@ -12,6 +12,10 @@ import javax.swing.JFrame;
 
 public class HomePanel
 {
+	/**
+	 * TODO:
+	 * switch to nicer_but_slower_film_list table
+	 */
 	
 	private Connection con;
 	

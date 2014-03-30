@@ -1,6 +1,9 @@
 package applet;
 
+import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -39,6 +42,16 @@ public class QueueView extends JComponent implements MouseListener, MouseMotionL
 	 * Paints each of the movies
 	 */
 	public void paintComponent(Graphics g) {
+		Graphics2D g2d = (Graphics2D) g;
+		// swing fonts suck. So I choose aesthetically pleasing ones
+		g2d.setFont(new Font("Pescadero", Font.PLAIN, 30));
+		
+		// turn on antialiasing for sexy looking text
+		g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,  
+                RenderingHints.VALUE_TEXT_ANTIALIAS_ON);  
+		
+		g2d.drawString("Your movie queue", 100, 100);
+		// paint the movies
 		for (DraggableMovie d : movies) {
 			d.paintComponent(g);
 		}
