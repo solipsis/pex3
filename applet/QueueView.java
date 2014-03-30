@@ -7,21 +7,37 @@ import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 
 import javax.swing.JComponent;
-import javax.swing.JPanel;
 
 public class QueueView extends JComponent implements MouseListener, MouseMotionListener {
 
+	
+	/**
+	 * TODO: add delete button to movies
+	 * check for delete when selecting movie
+	 * finalize button to update order of queue
+	 */
+	
+	
+	/** Contains all the movies in the queue */
 	ArrayList<DraggableMovie> movies = new ArrayList<DraggableMovie>();
+	/** The currently selected movie */
 	DraggableMovie selected;
 	
+	
+	/** 
+	 * Constructs a new QueueView panel
+	 * adds Mouse listeners
+	 */
 	public QueueView() {
 		movies.add(new DraggableMovie(20, 20, "Advanced Java"));
 		addMouseListener(this);
 		addMouseMotionListener(this);
 		selected = null;
 	}
-	
-	
+
+	/**
+	 * Paints each of the movies
+	 */
 	public void paintComponent(Graphics g) {
 		for (DraggableMovie d : movies) {
 			d.paintComponent(g);
@@ -29,24 +45,10 @@ public class QueueView extends JComponent implements MouseListener, MouseMotionL
 	}
 	
 	
-	@Override
-	public void mouseClicked(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseExited(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
+	/** 
+	 * Check and see if the mouse is pressed on a movie,
+	 * and set that movie to the selected movie
+	 */
 	@Override
 	public void mousePressed(MouseEvent e) {
 		System.out.println("pressed");
@@ -57,48 +59,46 @@ public class QueueView extends JComponent implements MouseListener, MouseMotionL
 				break;
 			}
 		}
-		
 	}
 
+	
+	 /**
+	  * Unselect the selected movie when the mouse is released 
+	  */
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
 		selected = null;
 	}
 
 
-
+	/**
+	 * While the mouse is dragged, update the position,
+	 * and collision box of the movie. Then repaint the panel
+	 */
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		if (selected == null) {
 			return;
 		}
-		
-		System.out.println("drag");
-		/*for (DraggableMovie d : movies) {
-			System.out.println(d.getRect().getX() + " : " + d.getRect().getY());
-			if (d.getRect().contains(e.getX(), e.getY())) {
-				d.setRect(e.getX(), e.getY());
-				d.setX(e.getX() - 5);
-				d.setY(e.getY() - 5);
-				repaint();
-				System.out.println("drag");
-			}
-		}
-		*/
 		selected.setRect(e.getX(), e.getY());
 		selected.setX(e.getX() - 5);
 		selected.setY(e.getY() - 5);
 		repaint();
-		
-		
 	}
 
-
+	
+	@Override
+	public void mouseClicked(MouseEvent arg0) {}
 
 	@Override
-	public void mouseMoved(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mouseEntered(MouseEvent arg0) {}
+
+	@Override
+	public void mouseExited(MouseEvent arg0) {}
+
+	@Override
+	public void mouseMoved(MouseEvent arg0) {}
+	
+	private static final long serialVersionUID = 1L;
 	
 }
