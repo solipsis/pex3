@@ -1,7 +1,11 @@
 package applet;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Font;
+import java.awt.Graphics2D;
 import java.awt.GraphicsEnvironment;
+import java.awt.Stroke;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -20,14 +24,16 @@ public class HomePanel
 	
 	private Connection con;
 	private JFrame frame;
+	private int bannerHeight;
 	
 	
 	public HomePanel() {
 		setupConnection();
 		frame = new JFrame("test");
-		frame.setSize(500,500);
+		frame.setSize(800,800);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		bannerHeight = 200;
 	}
 	
   public static void main( String args[] )
@@ -72,6 +78,28 @@ public class HomePanel
       e.printStackTrace();
     }
   }
+  
+  
+  public void drawBackground(Graphics2D g2d) {
+		g2d.setColor(parseHexColor("828282"));
+		g2d.fillRect(0, 0, frame.getWidth(), frame.getHeight());
+		g2d.setColor(parseHexColor("AEF100"));
+		g2d.fillRect(4, 4, frame.getWidth(), bannerHeight);
+		Stroke s = new BasicStroke(4.0f,   // Width
+              BasicStroke.CAP_SQUARE,    // End cap
+              BasicStroke.JOIN_MITER,    // Join style
+              10.0f,                     // Miter limit
+              new float[] {16.0f,20.0f}, // Dash pattern
+              0.0f);                     // Dash phase
+		g2d.setStroke(s);
+		g2d.setColor(Color.BLACK);
+		g2d.drawRect(4, 4, frame.getWidth(), bannerHeight);
+	}
+  
+  public Color parseHexColor(String hex) {
+		int i = Integer.parseInt(hex, 16);
+		return new Color(i);
+	}
   
   /**
    * create a new movieView panel and add it to the content pane
@@ -138,6 +166,10 @@ public class HomePanel
   
   public Connection getCon() {
 	  return con;
+  }
+  
+  public JFrame getFrame() {
+	  return frame;
   }
   
 }
