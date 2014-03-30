@@ -1,5 +1,6 @@
 package applet;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -34,28 +35,9 @@ public class MovieView extends JComponent implements MouseListener, MouseMotionL
 	public MovieView(HomePanel home, HashMap<String, String> hm) {
 		this.home = home;
 		this.hm = hm;
-		int rand;
-		
-		//actors = new ArrayList<String>(Arrays.asList(hm.get("actors").split(", ")));
-		for (String name : hm.get("actors").split(", ")) {
-			rand = (int) (Math.random() * home.getActorImages().size());
-			actors.add(new Actor(name, home.getActorImages().get(rand)));
-		}
 		assignActorImages();
-		//System.out.println(hm.get("description"));
 		addMouseListener(this);
-		
-		/*
-		image = null;
-		try {
-			image = ImageIO.read( new File("images/cage1.jpg"));
-		}
-		catch (IOException e) {
-			e.printStackTrace();
-			System.out.println(e.getMessage());
-		}
-		*/
-	
+		addMouseMotionListener(this);
 	}
 	
 	
@@ -94,22 +76,20 @@ public class MovieView extends JComponent implements MouseListener, MouseMotionL
 	
 	
 	public void assignActorImages() {
-		
+		int rand;
+		int x = 20;
+		int y = 300;
+		for (String name : hm.get("actors").split(", ")) {
+			rand = (int) (Math.random() * home.getActorImages().size());
+			actors.add(new Actor(name, home.getActorImages().get(rand), x, y));
+			x += 250;
+		}
 	}
 	
 	public void drawActors(Graphics2D g2d) {
-		int x = 20;
-		int y = 300;
-
 		for (Actor a : actors) {
-		
-			g2d.drawString(a.getName(), x, y);
-			//g2d.drawImage(home.getActorImages().get(pic), x, y, 125, 150, null);
-			g2d.drawImage(a.getImage(), x, y, 125, 150, null);
-			
-			x += 200;
+			a.paintComponent(g2d);
 		}
-		//g2d.drawImage(image, -50, -50, 125, 150, null);
 	}
 	
 	
@@ -136,9 +116,16 @@ public class MovieView extends JComponent implements MouseListener, MouseMotionL
 	}
 	
 	@Override
-	public void mouseMoved(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
+	public void mouseMoved(MouseEvent e) {
+		for (Actor a : actors) {
+			if (a.getRect().contains(e.getX()+10, e.getY()+10)) {
+				a.setColor(Color.RED);
+			}
+			else {
+				a.setColor(home.parseHexColor("19D1D1"));
+			}
+		}
+			
 	}
 	
 	private static final long serialVersionUID = 1L;

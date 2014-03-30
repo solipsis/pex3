@@ -45,13 +45,14 @@ public class DraggableMovie  {
 		g2d.drawString(title, x, y);
 	}
 
-	public Rectangle2D getRect() {
-		return rect;
-	}
 	
 //-----------------------------------------------
 // Getters and Setters
 //-----------------------------------------------
+	
+	public Rectangle2D getRect() {
+		return rect;
+	}
 	
 	public void setRect(double x, double y) {
 		rect.setRect(x, y, width, height);

@@ -89,7 +89,7 @@ public class HomePanel
   public void loadActorImages() {
 	  
 	  BufferedImage image = null;
-	  for (int x = 1; x < 10; x++) {
+	  for (int x = 1; x < 14; x++) {
 		  image = null;
 		  try {
 			  image = ImageIO.read( new File("images/cage" + x + ".jpg"));
