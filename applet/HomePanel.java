@@ -6,13 +6,18 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.GraphicsEnvironment;
 import java.awt.Stroke;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 public class HomePanel
@@ -25,28 +30,29 @@ public class HomePanel
 	private Connection con;
 	private JFrame frame;
 	private int bannerHeight;
+	private ArrayList<BufferedImage> actorImages;
+	
 	
 	
 	public HomePanel() {
 		setupConnection();
 		frame = new JFrame("test");
-		frame.setSize(800,800);
+		frame.setSize(1280,800);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		bannerHeight = 200;
+		actorImages = new ArrayList<BufferedImage>();
+		loadActorImages();
 	}
 	
   public static void main( String args[] )
   {
-	  /*JFrame frame = new JFrame("test");
-	  frame.setSize(500,500);
-	  frame.setVisible(true);
-	  frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	  frame.add(new QueueView());
-	  */
+	  
 	  HomePanel home = new HomePanel();
+	  //loadActorImages();
 	  //home.frame.add(new QueueView());
 	  home.frame.add(home.setupMovieView("ACE GOLDFINGER"));
+	  // ensures the new panel is placed and drawn
 	  home.frame.validate();
 	  
 	  try
@@ -80,21 +86,40 @@ public class HomePanel
   }
   
   
+  public void loadActorImages() {
+	  
+	  BufferedImage image = null;
+	  for (int x = 1; x < 10; x++) {
+		  image = null;
+		  try {
+			  image = ImageIO.read( new File("images/cage" + x + ".jpg"));
+			  actorImages.add(image);
+		  }
+		  catch (IOException e) {
+			  e.printStackTrace();
+			  System.out.println(e.getMessage());
+		  }
+	  }
+  }
+  
   public void drawBackground(Graphics2D g2d) {
-		g2d.setColor(parseHexColor("828282"));
-		g2d.fillRect(0, 0, frame.getWidth(), frame.getHeight());
-		g2d.setColor(parseHexColor("AEF100"));
-		g2d.fillRect(4, 4, frame.getWidth(), bannerHeight);
-		Stroke s = new BasicStroke(4.0f,   // Width
-              BasicStroke.CAP_SQUARE,    // End cap
-              BasicStroke.JOIN_MITER,    // Join style
-              10.0f,                     // Miter limit
-              new float[] {16.0f,20.0f}, // Dash pattern
-              0.0f);                     // Dash phase
-		g2d.setStroke(s);
-		g2d.setColor(Color.BLACK);
-		g2d.drawRect(4, 4, frame.getWidth(), bannerHeight);
-	}
+	  // background
+	  g2d.setColor(parseHexColor("828282"));
+	  g2d.fillRect(0, 0, frame.getWidth(), frame.getHeight());
+	  // banner
+	  g2d.setColor(parseHexColor("AEF100"));
+	  g2d.fillRect(4, 4, frame.getWidth(), bannerHeight);
+	  // banner border
+	  Stroke s = new BasicStroke(4.0f, // Width
+            BasicStroke.CAP_SQUARE,    // End cap
+            BasicStroke.JOIN_MITER,    // Join style
+            10.0f,                     // Miter limit
+            new float[] {16.0f,20.0f}, // Dash pattern
+            0.0f);                     // Dash phase
+	  g2d.setStroke(s);
+	  g2d.setColor(Color.BLACK);
+	  g2d.drawRect(4, 4, frame.getWidth(), bannerHeight);
+  }
   
   public Color parseHexColor(String hex) {
 		int i = Integer.parseInt(hex, 16);
@@ -112,11 +137,7 @@ public class HomePanel
 	  
 	  try {
 		  rs.first();
-		/*  System.out.println(rs.getString("title"));
-		  System.out.println(rs.getString("description"));
-		  System.out.println(rs.getString("category"));
-		  System.out.println(rs.getString("actors"));
-		  */
+		
 		  hm.put("title", rs.getString("title"));
 		  hm.put("desc", rs.getString("description"));
 		  hm.put("genre", rs.getString("category"));
@@ -163,6 +184,9 @@ public class HomePanel
 	return null;
   }
   
+//-----------------------------------------------
+//Getters and Setters
+//-----------------------------------------------
   
   public Connection getCon() {
 	  return con;
@@ -171,5 +195,18 @@ public class HomePanel
   public JFrame getFrame() {
 	  return frame;
   }
+  
+  public int getBannerHeight() {
+	  return bannerHeight;
+  }
+  
+  public ArrayList<BufferedImage> getActorImages() {
+	  return actorImages;
+  }
+  
+  
+  
+  
+  
   
 }
