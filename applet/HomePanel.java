@@ -8,6 +8,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import javax.swing.JFrame;
+
 public class HomePanel
 {
 	
@@ -20,31 +22,36 @@ public class HomePanel
 	
   public static void main( String args[] )
   {
-    
+	  JFrame frame = new JFrame("test");
+	  frame.setSize(500,500);
+	  frame.setVisible(true);
+	  frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	  frame.add(new QueueView());
+	  
 	  HomePanel home = new HomePanel();
-    try
-    {
-      //con = DriverManager.getConnection( "jdbc:mysql://localhost:3306/sakila", "root", "" );
-      Statement stmt = home.con.createStatement();
-      ResultSet rs = stmt.executeQuery( "select * from film_text" );
+	  try
+	  {
+		  //con = DriverManager.getConnection( "jdbc:mysql://localhost:3306/sakila", "root", "" );
+		  Statement stmt = home.con.createStatement();
+		  ResultSet rs = stmt.executeQuery( "select * from film_text" );
       
-      while( rs.next() )
-      {
-        System.out.println( rs.getString( "title" ) );
-      }
+		  while( rs.next() )
+		  {
+			  System.out.println( rs.getString( "title" ) );
+		  }
       
-      rs.close();
-      stmt.close();
+		  rs.close();
+		  stmt.close();
       
-      GraphicsEnvironment e = GraphicsEnvironment.getLocalGraphicsEnvironment();
-      Font[] fonts = e.getAllFonts();
-      for (Font f : fonts) {
-    	  System.out.println(f.getFontName());
-      }
-      //MovieView test = new MovieView(home);
-      //test.testPrint();
-      home.gotoMovieView("Academy Dinosaur");
-      home.con.close();
+		  GraphicsEnvironment e = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		  Font[] fonts = e.getAllFonts();
+		  for (Font f : fonts) {
+			  System.out.println(f.getFontName());
+		  }
+		  //MovieView test = new MovieView(home);
+		  //test.testPrint();
+		  home.gotoMovieView("Academy Dinosaur");
+		  home.con.close();
     }
     catch( SQLException e )
     {
@@ -58,8 +65,6 @@ public class HomePanel
    * @param title
    */
   public void gotoMovieView(String title) {
-	  //MovieView test = new MovieView(this, o);
-	  // test.testPrint();
 	  ResultSet rs = createResultSet("SELECT * FROM film_text WHERE title='" + title + "';");
 	  MovieView test = new MovieView(this, rs);
 	  test.testPrint();
