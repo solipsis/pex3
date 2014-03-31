@@ -49,45 +49,31 @@ public class HomePanel
   {
 	  
 	  HomePanel home = new HomePanel();
-	  //loadActorImages();
+	  
+	  //uncomment one of the following 3 lines to test that view
 	  //home.frame.add(new QueueView());
 	  home.frame.add(home.setupMovieView("ACE GOLDFINGER"));
+	  //home.frame.add(new ActorView());
+	  
 	  // ensures the new panel is placed and drawn
 	  home.frame.validate();
 	  
-	  try
-	  {
-		  //con = DriverManager.getConnection( "jdbc:mysql://localhost:3306/sakila", "root", "" );
-		  Statement stmt = home.con.createStatement();
-		  ResultSet rs = stmt.executeQuery( "select * from film_text" );
-      
-		  while( rs.next() )
-		  {
-			 // System.out.println( rs.getString( "title" ) );
-		  }
-      
-		  rs.close();
-		  stmt.close();
-      
-		  GraphicsEnvironment e = GraphicsEnvironment.getLocalGraphicsEnvironment();
-		  Font[] fonts = e.getAllFonts();
-		  for (Font f : fonts) {
-			 // System.out.println(f.getFontName());
-		  }
-		  //MovieView test = new MovieView(home);
-		  //test.testPrint();
-		 // home.gotoMovieView("Academy Dinosaur");
-		  home.con.close();
-    }
-    catch( SQLException e )
-    {
-      e.printStackTrace();
-    }
+	  
   }
   
   
+  /**
+   * Uses console to display all fonts available to this particular computer
+   */
+  public void printAvailableFonts() {
+	  GraphicsEnvironment e = GraphicsEnvironment.getLocalGraphicsEnvironment();
+	  Font[] fonts = e.getAllFonts();
+	  for (Font f : fonts) {
+		  System.out.println(f.getFontName());
+	  }
+  }
+  
   public void loadActorImages() {
-	  
 	  BufferedImage image = null;
 	  for (int x = 1; x < 14; x++) {
 		  image = null;

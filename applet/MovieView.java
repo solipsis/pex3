@@ -8,14 +8,9 @@ import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
-import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 
 public class MovieView extends JComponent implements MouseListener, MouseMotionListener  {
@@ -29,13 +24,12 @@ public class MovieView extends JComponent implements MouseListener, MouseMotionL
 	private HomePanel home;
 	private HashMap<String, String> hm;
 	private ArrayList<Actor> actors = new ArrayList<Actor>();
-	//private ArrayList<BufferedImage> images;
-	//private BufferedImage image;
+	
 	
 	public MovieView(HomePanel home, HashMap<String, String> hm) {
 		this.home = home;
 		this.hm = hm;
-		assignActorImages();
+		createActors();
 		addMouseListener(this);
 		addMouseMotionListener(this);
 	}
@@ -62,20 +56,28 @@ public class MovieView extends JComponent implements MouseListener, MouseMotionL
 		repaint();
 	}
 	
+	/**
+	 * draws the title of the movie
+	 */
 	public void drawTitle(Graphics2D g2d) {
 		g2d.setColor(home.parseHexColor("4791FF"));
 		g2d.setFont(new Font("Pescadero", Font.BOLD, 50));
 		g2d.drawString(hm.get("title"), home.getFrame().getWidth()/3, home.getBannerHeight()/2);
 	}
 	
+	/**
+	 * Draws the description of the movie
+	 */
 	public void drawDescription(Graphics2D g2d) {
 		g2d.setColor(home.parseHexColor("19D1D1"));
 		g2d.setFont(new Font("Pescadero", Font.PLAIN, 25));
 		g2d.drawString(hm.get("desc"), 50, home.getBannerHeight() + 50);
 	}
 	
-	
-	public void assignActorImages() {
+	/**
+	 * Populates the actor arraylist with new actor objects
+	 */
+	public void  createActors() {
 		int rand;
 		int x = 20;
 		int y = 300;
@@ -86,13 +88,30 @@ public class MovieView extends JComponent implements MouseListener, MouseMotionL
 		}
 	}
 	
+	/**
+	 * Draws all the actors
+	 */
 	public void drawActors(Graphics2D g2d) {
 		for (Actor a : actors) {
 			a.paintComponent(g2d);
 		}
 	}
 	
-	
+	/**
+	 * Detects if the mouse is over an actor and 
+	 * highlights the actor if true
+	 */
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		for (Actor a : actors) {
+			if (a.getRect().contains(e.getX()+10, e.getY()+10)) {
+				a.setColor(Color.RED);
+			}
+			else {
+				a.setColor(home.parseHexColor("19D1D1"));
+			}
+		}
+	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {}
@@ -110,23 +129,7 @@ public class MovieView extends JComponent implements MouseListener, MouseMotionL
 	public void mouseReleased(MouseEvent e) {}
 	
 	@Override
-	public void mouseDragged(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	@Override
-	public void mouseMoved(MouseEvent e) {
-		for (Actor a : actors) {
-			if (a.getRect().contains(e.getX()+10, e.getY()+10)) {
-				a.setColor(Color.RED);
-			}
-			else {
-				a.setColor(home.parseHexColor("19D1D1"));
-			}
-		}
-			
-	}
+	public void mouseDragged(MouseEvent arg0) {}
 	
 	private static final long serialVersionUID = 1L;
 

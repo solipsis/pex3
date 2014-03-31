@@ -17,6 +17,15 @@ public class Actor {
 	private Rectangle2D rect;
 	private int x, y;
 
+	/**
+	 * This constructor creates a new actor with a name and image
+	 * as well as location info used for drawing and the bounding box
+	 * 
+	 * @param name
+	 * @param image
+	 * @param x
+	 * @param y
+	 */
 	public Actor(String name, BufferedImage image, int x, int y) {
 		this.name = name;
 		this.image = image;
