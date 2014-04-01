@@ -57,8 +57,6 @@ public class HomePanel
 	  
 	  // ensures the new panel is placed and drawn
 	  home.frame.validate();
-	  
-	  
   }
   
   
@@ -73,6 +71,9 @@ public class HomePanel
 	  }
   }
   
+  /**
+   * loads the actor images from the image file
+   */
   public void loadActorImages() {
 	  BufferedImage image = null;
 	  for (int x = 1; x < 14; x++) {
@@ -88,6 +89,11 @@ public class HomePanel
 	  }
   }
   
+  /**
+   * Draws the general layout of the page.
+   * Includes the background, a top banner,
+   * and a border around the banner
+   */
   public void drawBackground(Graphics2D g2d) {
 	  // background
 	  g2d.setColor(parseHexColor("828282"));
@@ -107,6 +113,13 @@ public class HomePanel
 	  g2d.drawRect(4, 4, frame.getWidth(), bannerHeight);
   }
   
+  /**
+   * Turns a hex string into an int that can be used
+   * to contstruct a new Color
+   * 
+   * @param hex
+   * @return a Color 
+   */
   public Color parseHexColor(String hex) {
 		int i = Integer.parseInt(hex, 16);
 		return new Color(i);
@@ -114,6 +127,7 @@ public class HomePanel
   
   /**
    * create a new movieView panel and add it to the content pane
+   * required info is stored in a hashmap
    * 
    * @param title
    */
@@ -123,7 +137,6 @@ public class HomePanel
 	  
 	  try {
 		  rs.first();
-		
 		  hm.put("title", rs.getString("title"));
 		  hm.put("desc", rs.getString("description"));
 		  hm.put("genre", rs.getString("category"));
@@ -131,24 +144,39 @@ public class HomePanel
 	  } catch (SQLException e) {
 		  e.printStackTrace();
 	  }
-	  //frame.add( new MovieView(this, hm));
-	  //System.out.println("frame add");
-	 // frame.add(new QueueView());
+	  
 	  return new MovieView(this, hm);
-	  //test.testPrint();
   }
   
+  /**
+   * set the main content pane to a new ActorView
+   * @param actor
+   */
   public void gotoActorView(String actor) {
+	  HashMap<String, String> hm = new HashMap<>();
+	  ResultSet rs = createResultSet("SELECT * FROM nicer_but_slower_film_list WHERE CONTAINS(actors, '" + actor + "';)");
 	  
+	  try {
+		  rs.first();
+		  
+	  } catch (SQLException e) {
+		  e.printStackTrace();
+	  }
   }
   
+  
+  /**
+   * Set the main content pane to a new QueueView
+   * @param title
+   */
   public void gotoQueueView(String title) {
-	  //ResultSet rs = createResultSet(query)
-	  
+	  // TODO:
   }
   
   
-  
+  /**
+   * Sets up the connection to the database
+   */
   private void setupConnection() {
 	  try {
 			con = DriverManager.getConnection( "jdbc:mysql://localhost:3306/sakila", "root", "" );
@@ -157,6 +185,12 @@ public class HomePanel
 		}
   }
   
+  /**
+   * Creates a result set from a sql string query
+   * 
+   * @param query
+   * @return a sql result set
+   */
   private ResultSet createResultSet(String query) {
 	  Statement stmt;
 	  ResultSet rs;
