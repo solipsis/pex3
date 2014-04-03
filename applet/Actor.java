@@ -9,7 +9,7 @@ import java.awt.image.BufferedImage;
  * simple class that holds an actor name and a picture
  * as well as bounding box info for clicking
  */
-public class Actor extends BoundedObject {
+public class Actor extends BoundedObject{
 	
 	private String name;
 	private BufferedImage image;
@@ -28,12 +28,12 @@ public class Actor extends BoundedObject {
 	 * @param y
 	 */
 	public Actor(String name, BufferedImage image, int x, int y) {
+		super(x,y,125,150);
 		this.name = name;
 		this.image = image;
-		setX(x);
-		setY(y);
+		
 		//make this take width and height TODO
-		setRect(x, y, 125, 150);
+		//setRect(x, y, 125, 150);
 	}
 	
 	/**

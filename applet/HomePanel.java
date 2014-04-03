@@ -36,10 +36,12 @@ public class HomePanel extends JApplet {
 	private JFrame frame;
 	private int bannerHeight;
 	private ArrayList<BufferedImage> actorImages;
-	static Color bannerColor;
-	static Color bannerTextColor;
-	static Color backgroundColor;
-	static Color primaryTextColor;
+	private Color bannerColor;
+	private Color bannerTextColor;
+	private Color backgroundColor;
+	private Color primaryTextColor;
+	private Font primaryTextFont;
+	private Font headerFont;
 
 	public HomePanel() {
 		setupConnection();
@@ -51,6 +53,7 @@ public class HomePanel extends JApplet {
 		actorImages = new ArrayList<BufferedImage>();
 		loadActorImages();
 		createColors();
+		createFonts();
 	}
 
 	public void init() {
@@ -64,8 +67,9 @@ public class HomePanel extends JApplet {
 
 		// uncomment one of the following 3 lines to test that view
 		// home.frame.add(new QueueView());
-		 frame.add(setupMovieView("ACE GOLDFINGER"));
+		 //frame.add(setupMovieView("ACE GOLDFINGER"));
 		//frame.add(gotoActorView("Chris Depp"));
+		frame.add(gotoActorView("Bob Fawcett"));
 		//frame.add(setupSearchView());
 		// home.frame.add(new ActorView());
 
@@ -135,6 +139,17 @@ public class HomePanel extends JApplet {
 		bannerTextColor = parseHexColor("4791FF");
 		backgroundColor = parseHexColor("828282");
 		primaryTextColor = parseHexColor("19D1D1");
+	}
+	
+	private void createFonts() {
+		primaryTextFont = new Font("Pescadero", Font.PLAIN, 25);
+		headerFont = new Font("Pescadero", Font.BOLD, 50);
+	}
+	
+	
+	
+	public void backgroundFont(Graphics2D g2d) {
+		
 	}
 
 	/**
@@ -265,6 +280,26 @@ public class HomePanel extends JApplet {
 
 	public ArrayList<BufferedImage> getActorImages() {
 		return actorImages;
+	}
+
+	public Color getBannerColor() {
+		return bannerColor;
+	}
+
+	public Color getBannerTextColor() {
+		return bannerTextColor;
+	}
+
+	public Color getBackgroundColor() {
+		return backgroundColor;
+	}
+
+	public Color getPrimaryTextColor() {
+		return primaryTextColor;
+	}
+
+	public Font getPrimaryTextFont() {
+		return primaryTextFont;
 	}
 
 }
