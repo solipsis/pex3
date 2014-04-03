@@ -7,8 +7,9 @@ import java.awt.Graphics2D;
 import java.awt.GraphicsEnvironment;
 import java.awt.Stroke;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -18,10 +19,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.imageio.ImageIO;
+import javax.swing.JApplet;
 import javax.swing.JFrame;
 
-public class HomePanel
+public class HomePanel extends JApplet
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	/**
 	 * TODO:
 	 * switch to nicer_but_slower_film_list table
@@ -31,7 +37,10 @@ public class HomePanel
 	private JFrame frame;
 	private int bannerHeight;
 	private ArrayList<BufferedImage> actorImages;
-	
+	static Color bannerColor;
+	static Color bannerTextColor;
+	static Color backgroundColor;
+	static Color primaryTextColor;
 	
 	
 	public HomePanel() {
@@ -43,9 +52,12 @@ public class HomePanel
 		bannerHeight = 200;
 		actorImages = new ArrayList<BufferedImage>();
 		loadActorImages();
+		createColors();
 	}
 	
-  public static void main( String args[] )
+ 
+
+public static void main( String args[] )
   {
 	  
 	  HomePanel home = new HomePanel();
@@ -76,10 +88,25 @@ public class HomePanel
    */
   public void loadActorImages() {
 	  BufferedImage image = null;
+	  
 	  for (int x = 1; x < 14; x++) {
 		  image = null;
 		  try {
-			  image = ImageIO.read( new File("images/cage" + x + ".jpg"));
+			  
+			  Class cls = getClass();
+			  System.out.println(cls);
+			  //ClassLoader cLoader = cls.getClassLoader();
+			  //System.out.println(cLoader.getClass()); 
+			  URL url = cls.getResource("images/cage" + x + ".jpg");
+			  System.out.println(url);
+			  image = ImageIO.read(url);
+			 // InputStream input = ClassLoader.getResourceAsStream("images/cage" + x + ".jpg");
+			  //System.out.println(getCodeBase());
+			  //image = ImageIO.read( new File("images/cage" + x + ".jpg"));
+			  //URL url = new URL(getCodeBase(), "cage" + x + ".jpg" );
+			  //image = ImageIO.read(input)
+			  //imageIO.
+			  //image = ImageIO.read(url);
 			  actorImages.add(image);
 		  }
 		  catch (IOException e) {
@@ -112,6 +139,15 @@ public class HomePanel
 	  g2d.setColor(Color.BLACK);
 	  g2d.drawRect(4, 4, frame.getWidth(), bannerHeight);
   }
+  
+  
+  private void createColors() {
+	  bannerColor = parseHexColor("AEF100");
+	  bannerTextColor = parseHexColor("4791FF");
+	  backgroundColor = parseHexColor("828282");
+	  primaryTextColor = parseHexColor("19D1D1");
+  }
+  
   
   /**
    * Turns a hex string into an int that can be used
