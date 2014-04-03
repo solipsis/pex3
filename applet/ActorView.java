@@ -19,7 +19,6 @@ public class ActorView extends JComponent implements MouseListener, MouseMotionL
 	
 	private String name;
 	private BufferedImage image;
-	private ArrayList<String> movies;
 	private ArrayList<StringLink> movieLinks;
 	private HomePanel home;
 	
@@ -29,19 +28,20 @@ public class ActorView extends JComponent implements MouseListener, MouseMotionL
 		
 		this.name = name;
 		this.image = image;
-		this.movies = movies;
 		this.home = home;
 		this.movieLinks = new ArrayList<StringLink>();
+		
+		// create links for all the movies
 		int x = 50;
 		int y = home.getBannerHeight() + 100;
 		for (int i = 0; i < movies.size() / 2; i++) {
-			movieLinks.add(new StringLink(x,y, 100, 10, movies.get(i)));
+			movieLinks.add(new StringLink(x,y, 300, 20, movies.get(i)));
 			y += 30;
 		}
-		x = 400;
-		y = home.getBannerHeight();
+		x = 420;
+		y = home.getBannerHeight() + 100;
 		for (int i = movies.size() / 2; i < movies.size(); i++) {
-			movieLinks.add(new StringLink(x,y, 100, 10, movies.get(i)));
+			movieLinks.add(new StringLink(x,y, 300, 20, movies.get(i)));
 			y += 30;
 		}
 	}
@@ -66,26 +66,18 @@ public class ActorView extends JComponent implements MouseListener, MouseMotionL
 	}
 	
 	public void drawMovies(Graphics2D g2d) {
-		int x = 50;
-		int y = home.getBannerHeight() + 100;
+		//int x = 50;
+		//int y = home.getBannerHeight() + 100;
 		
 		g2d.setFont(new Font("Pescadero", Font.ITALIC, 40));
-		g2d.drawString("Movies:", x + 200, y - 50);
-		
+		g2d.drawString("Movies:", 250, home.getBannerHeight() + 50);
 		
 		g2d.setFont(home.getPrimaryTextFont());
-		g2d.setColor(home.getPrimaryTextColor());
+		for (StringLink link : movieLinks) {
+			link.paintComponent(g2d);
+		}
 		
-		for (int i = 0; i < movies.size() / 2; i++) {
-			g2d.drawString(movies.get(i), x, y);
-			y += 30;
-		}
-		x = 400;
-		y = home.getBannerHeight() + 100;
-		for (int i = movies.size() / 2; i < movies.size(); i++) {
-			g2d.drawString(movies.get(i), x, y);
-			y += 30;
-		}
+		
 	}
 	
 	/**
@@ -100,14 +92,13 @@ public class ActorView extends JComponent implements MouseListener, MouseMotionL
 	
 
 	/**
-	 * Detects if the mouse is over an actor and 
-	 * highlights the actor if true
+	 * Detects if the mouse is over a link and 
+	 * highlights the link if true
 	 */
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		System.out.println("move");
 		for (StringLink link : movieLinks) {
-			if (link.getRect().contains(e.getX()+10, e.getY()+10)) {
+			if (link.getRect().contains(e.getX(), e.getY() + 22)) {
 				link.setColor(Color.RED);
 			}
 			else {
@@ -121,7 +112,15 @@ public class ActorView extends JComponent implements MouseListener, MouseMotionL
 	public void mouseDragged(MouseEvent e) {}
 	
 	@Override
-	public void mouseClicked(MouseEvent e) {}
+	public void mouseClicked(MouseEvent e) {
+		for (StringLink link : movieLinks) {
+			if (link.getRect().contains(e.getX(), e.getY() + 22)) {
+				link.setColor(Color.RED);
+				home.gotoMovieView(link.getValue());
+				break;
+			}
+		}
+	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {}

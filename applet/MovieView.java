@@ -71,7 +71,7 @@ public class MovieView extends JComponent implements MouseListener, MouseMotionL
 	public void drawDescription(Graphics2D g2d) {
 		g2d.setColor(home.parseHexColor("19D1D1"));
 		g2d.setFont(new Font("Pescadero", Font.PLAIN, 25));
-		g2d.drawString(hm.get("desc"), 50, home.getBannerHeight() + 50);
+		g2d.drawString(hm.get("desc"), 30, home.getBannerHeight() + 50);
 	}
 	
 	/**
@@ -81,10 +81,17 @@ public class MovieView extends JComponent implements MouseListener, MouseMotionL
 		int rand;
 		int x = 20;
 		int y = 300;
+		int numActors = 0;
 		for (String name : hm.get("actors").split(", ")) {
+			if (numActors > 4) {
+				y += 200;
+				x = 20;
+				numActors = 0;
+			}
 			rand = (int) (Math.random() * home.getActorImages().size());
 			actors.add(new Actor(name, home.getActorImages().get(rand), x, y));
 			x += 250;
+			numActors++;
 		}
 	}
 	
@@ -114,7 +121,13 @@ public class MovieView extends JComponent implements MouseListener, MouseMotionL
 	}
 
 	@Override
-	public void mouseClicked(MouseEvent e) {}
+	public void mouseClicked(MouseEvent e) {
+		for (Actor a : actors) {
+			if (a.getRect().contains(e.getX()+10, e.getY()+10)) {
+				home.gotoActorView(a.getName());
+			}
+		}
+	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {}

@@ -15,9 +15,7 @@ public class Actor extends BoundedObject{
 	private BufferedImage image;
 	private Color textColor;
 
-	//private Rectangle2D rect;
-	//private int x, y;
-
+	
 	/**
 	 * This constructor creates a new actor with a name and image
 	 * as well as location info used for drawing and the bounding box
@@ -31,13 +29,10 @@ public class Actor extends BoundedObject{
 		super(x,y,125,150);
 		this.name = name;
 		this.image = image;
-		
-		//make this take width and height TODO
-		//setRect(x, y, 125, 150);
 	}
 	
 	/**
-	 * Paints the actor and his picture
+	 * Paints the actor name and his picture
 	 */
 	public void paintComponent(Graphics2D g2d) {
 		g2d.setColor(textColor);
@@ -50,14 +45,27 @@ public class Actor extends BoundedObject{
 // Getters and Setters
 //-----------------------------------------------
 	
+	
+	/**
+	 * Accessor method for the actor name
+	 * @return the name of the actor
+	 */
 	public String getName() {
 		return name;
 	}
-
+	
+	/**
+	 * Accessor method for the actor's image
+	 * @return the image of the actor
+	 */
 	public BufferedImage getImage() {
 		return image;
 	}
 
+	/**
+	 * sets the color the actors name should be drawn as
+	 * @param color to draw the name in
+	 */
 	public void setColor(Color c) {
 		textColor = c;
 	}

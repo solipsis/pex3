@@ -69,7 +69,8 @@ public class HomePanel extends JApplet {
 		// home.frame.add(new QueueView());
 		 //frame.add(setupMovieView("ACE GOLDFINGER"));
 		//frame.add(gotoActorView("Chris Depp"));
-		frame.add(gotoActorView("Bob Fawcett"));
+		//frame.add(gotoActorView("Bob Fawcett"));
+		gotoActorView("Chris Depp");
 		//frame.add(setupSearchView());
 		// home.frame.add(new ActorView());
 
@@ -169,7 +170,7 @@ public class HomePanel extends JApplet {
 	 * 
 	 * @param title
 	 */
-	public MovieView setupMovieView(String title) {
+	public void gotoMovieView(String title) {
 		HashMap<String, String> hm = new HashMap<>();
 		ResultSet rs = createResultSet("SELECT * FROM nicer_but_slower_film_list WHERE title='"
 				+ title + "';");
@@ -183,8 +184,11 @@ public class HomePanel extends JApplet {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
-		return new MovieView(this, hm);
+		
+		// Change the view
+		frame.getContentPane().removeAll();
+		frame.add(new MovieView(this, hm));
+		frame.validate();
 	}
 
 	/**
@@ -193,28 +197,31 @@ public class HomePanel extends JApplet {
 	 * @param actor
 	 * @return
 	 */
-	public Component gotoActorView(String actor) {
+	public void gotoActorView(String actor) {
 		
 		String query = "SELECT * FROM nicer_but_slower_film_list WHERE actors LIKE \"%" + actor + "%\";";
 		System.out.println(query);
-		//ResultSet rs = createResultSet("SELECT * FROM nicer_but_slower_film_list WHERE CONTAINS(actors, '" + actor + "');");
 		ResultSet rs = createResultSet(query);
 		ArrayList<String> movies = new ArrayList<String>();
 
 		try {
 			System.out.println("first");
 			rs.first();
-			//rs.get
 			while (rs.next()) {
-				System.out.println("a");
-				System.out.println(rs.getString("title"));
 				movies.add(rs.getString("title"));
 			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return new ActorView(this, actor, actorImages.get(0), movies);
+		
+		int rand;
+		rand = (int) (Math.random() * getActorImages().size());
+		
+		// Change the view
+		frame.getContentPane().removeAll();
+		frame.add(new ActorView(this, actor, actorImages.get(rand), movies));
+		frame.validate();
 	}
 
 	private Component setupSearchView() {
