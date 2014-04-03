@@ -9,13 +9,14 @@ import java.awt.image.BufferedImage;
  * simple class that holds an actor name and a picture
  * as well as bounding box info for clicking
  */
-public class Actor {
+public class Actor extends BoundedObject {
 	
 	private String name;
 	private BufferedImage image;
 	private Color textColor;
-	private Rectangle2D rect;
-	private int x, y;
+
+	//private Rectangle2D rect;
+	//private int x, y;
 
 	/**
 	 * This constructor creates a new actor with a name and image
@@ -29,9 +30,10 @@ public class Actor {
 	public Actor(String name, BufferedImage image, int x, int y) {
 		this.name = name;
 		this.image = image;
-		this.x = x;
-		this.y = y;
-		rect = new Rectangle2D.Double(x,y,150,150);
+		setX(x);
+		setY(y);
+		//make this take width and height TODO
+		setRect(x, y, 125, 150);
 	}
 	
 	/**
@@ -39,8 +41,8 @@ public class Actor {
 	 */
 	public void paintComponent(Graphics2D g2d) {
 		g2d.setColor(textColor);
-		g2d.drawString(name, x, y);
-		g2d.drawImage(image, x, y+5, 125, 150, null);
+		g2d.drawString(name, getX(), getY());
+		g2d.drawImage(image, getX(), getY()+5, 125, 150, null);
 		
 	}
 
@@ -56,12 +58,10 @@ public class Actor {
 		return image;
 	}
 
-	public Rectangle2D getRect() {
-		return rect;
-	}
-	
 	public void setColor(Color c) {
 		textColor = c;
 	}
+	
+
 	
 }

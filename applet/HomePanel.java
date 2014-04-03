@@ -60,17 +60,16 @@ public class HomePanel extends JApplet {
 	// public static void main( String args[] )
 	public void run() {
 
-		// HomePanel home = new HomePanel();
+		
 
 		// uncomment one of the following 3 lines to test that view
 		// home.frame.add(new QueueView());
-		// frame.add(setupMovieView("ACE GOLDFINGER"));
+		 frame.add(setupMovieView("ACE GOLDFINGER"));
 		//frame.add(gotoActorView("Chris Depp"));
-		frame.add(setupSearchView());
+		//frame.add(setupSearchView());
 		// home.frame.add(new ActorView());
 
 		// ensures the new panel is placed and drawn
-		// home.frame.validate();
 		frame.validate();
 	}
 
@@ -95,22 +94,11 @@ public class HomePanel extends JApplet {
 		for (int x = 1; x < 14; x++) {
 			image = null;
 			try {
-
-				Class cls = getClass();
-				System.out.println(cls);
-				// ClassLoader cLoader = cls.getClassLoader();
-				// System.out.println(cLoader.getClass());
+				// image paths must be from a relative url when running 
+				// an applet instead of applicaiton
+				Class<? extends HomePanel> cls = getClass();
 				URL url = cls.getResource("images/cage" + x + ".jpg");
-				System.out.println(url);
 				image = ImageIO.read(url);
-				// InputStream input =
-				// ClassLoader.getResourceAsStream("images/cage" + x + ".jpg");
-				// System.out.println(getCodeBase());
-				// image = ImageIO.read( new File("images/cage" + x + ".jpg"));
-				// URL url = new URL(getCodeBase(), "cage" + x + ".jpg" );
-				// image = ImageIO.read(input)
-				// imageIO.
-				// image = ImageIO.read(url);
 				actorImages.add(image);
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -191,17 +179,20 @@ public class HomePanel extends JApplet {
 	 * @return
 	 */
 	public Component gotoActorView(String actor) {
-		HashMap<String, String> hm = new HashMap<>();
-		String qeury = "SELECT * FROM nicer_but_slower_film_list WHERE CONTAINS(actors, '"
-				+ actor + "');";
-		System.out.println(qeury);
-		ResultSet rs = createResultSet("SELECT * FROM nicer_but_slower_film_list WHERE CONTAINS(actors, '"
-				+ actor + "');");
+		
+		String query = "SELECT * FROM nicer_but_slower_film_list WHERE actors LIKE \"%" + actor + "%\";";
+		System.out.println(query);
+		//ResultSet rs = createResultSet("SELECT * FROM nicer_but_slower_film_list WHERE CONTAINS(actors, '" + actor + "');");
+		ResultSet rs = createResultSet(query);
 		ArrayList<String> movies = new ArrayList<String>();
 
 		try {
+			System.out.println("first");
 			rs.first();
+			//rs.get
 			while (rs.next()) {
+				System.out.println("a");
+				System.out.println(rs.getString("title"));
 				movies.add(rs.getString("title"));
 			}
 

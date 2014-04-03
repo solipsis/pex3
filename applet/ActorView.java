@@ -39,10 +39,31 @@ public class ActorView extends JComponent implements MouseListener, MouseMotionL
 		
 		home.drawBackground(g2d);
 		
-		g2d.drawImage(image, home.getFrame().getWidth()/3, home.getBannerHeight()/2, null);
+		drawName(g2d);
+		g2d.drawImage(image, home.getFrame().getWidth()/3, home.getBannerHeight()/2, 100,100, null);
+		drawMovies(g2d);
 		
 		
 		repaint();
+	}
+	
+	public void drawMovies(Graphics2D g2d) {
+		int x = 50;
+		int y = 200;
+		
+		for (int i = 0; i < movies.size(); i++) {
+			g2d.drawString(movies.get(i), x, y);
+			y += 50;
+		}
+	}
+	
+	/**
+	 * draws the name of the actor
+	 */
+	public void drawName(Graphics2D g2d) {
+		g2d.setColor(home.parseHexColor("4791FF"));
+		g2d.setFont(new Font("Pescadero", Font.BOLD, 50));
+		g2d.drawString(name, home.getFrame().getWidth()/3, home.getBannerHeight()/2);
 	}
 	
 	@Override
